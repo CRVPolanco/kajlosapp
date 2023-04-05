@@ -1,0 +1,29 @@
+.NewChatButton {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 75px;
+  height: 75px;
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: rgba(153, 75, 200);
+  z-index: 1;
+  box-shadow: 0 2px 6px 3px rgb(200, 200, 200);
+}
+.NewChatButton .NewChatButton--button{
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-radius: 50%;
+}
+
+.NewChatButton--button svg {
+  width: 75%;
+  height: 75%;
+  color: #fff;
+}

@@ -1,0 +1,70 @@
+.Chat {
+  width: 100%;
+  height: 84px;
+  padding: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.Chat:hover {
+  background-color: rgba(240, 240, 240, 0.82);
+}
+
+.Chat__info {
+  width: 85%;
+  height: 100%;
+  display: flex;
+  gap: 12px;
+}
+.Chat__info-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #cccccc;
+}
+.Chat__info-icon .Chat__info-icon--img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.Chat__info .Chat__info-text{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+.Chat__info-text .Chat__info-text--name {
+  font-weight: bold;
+  font-size: 17px;
+}
+.Chat__info-text .Chat__info-text--message {
+  font-size: 15px;
+  font-weight: 500;
+  color: #bbbbbb;
+}
+.Chat__data {
+  width: 15%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.Chat__data .Chat__data--date {
+  color: rgba(153, 75, 200, 0.75);
+  font-weight: bold;
+}
+.Chat__data .Chat__date--total_messages {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 2px;
+  font-size: 14px;
+  background-color:rgba(153, 75, 200, 0.75);
+  color: #fff;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border-radius: 50%;
+}
+

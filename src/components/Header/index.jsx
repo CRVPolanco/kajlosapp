@@ -4,6 +4,9 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import './Header.css';
 
 const Header = () => {
+
+
+
   return(
     <header className="Header" id="Header">
       <nav className='Header__nav'>
@@ -12,10 +15,10 @@ const Header = () => {
         </section>
         <section className="nav__options-container">
           <figure className='options-container__icon-container'>
-            <img src="" alt="Search" className="options-container--search" />
+            <SearchIcon />
           </figure>
           <figure className='options-container__icon-container'>
-            <img src="" alt="Options" className="options-container--options" />
+            <MoreVertIcon />
           </figure>
         </section>
       </nav>

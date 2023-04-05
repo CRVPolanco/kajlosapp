@@ -1,13 +1,19 @@
 import React from 'react';
-import MainContainer from './containers/MainContainer';
+import { ChatContextProvider } from './context/ChatContext';
 import Header from './components/Header';
+import MainContainer from './containers/MainContainer';
+import ChatsContainer from './containers/ChatsContainer';
 import './styles/App.css';
+
 function App() {
 
   return (
-    <MainContainer>
-      <Header></Header>
-    </MainContainer>
+    <ChatContextProvider>
+      <MainContainer>
+        <Header />
+        <ChatsContainer/>
+      </MainContainer>
+    </ChatContextProvider>
   );
 }
 
