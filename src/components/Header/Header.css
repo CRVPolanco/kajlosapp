@@ -3,37 +3,3 @@
   height: 62px;
   background-color: rgba(153, 75, 200, 0.8);
 }
-
-.Header .Header__nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  max-width: 500px;
-  height: 62px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 12px;
-  background-color: rgba(153, 75, 200, 1);
-  z-index: 1;
-}
-.Header__nav .nav__logo-container .logo-container--logo{
-  width: 125px;
-  height: 44px;
-}
-
-.Header .Header__nav .nav__options-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 16px;
-}
-.nav__options-container .options-container__icon-container {
-  width: 32px;
-  height: 32px;
-}
-.options-container__icon-container svg {
-  width: 100%;
-  height: 100%;
-  color: #fff;
-}

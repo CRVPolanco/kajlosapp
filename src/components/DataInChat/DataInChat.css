@@ -1,0 +1,40 @@
+.DataInChat__info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.DataInChat__info .DataInChat__info-return {
+  width: 32px;
+  height: 32px;
+  color: #fff;
+}
+.DataInChat__info .DataInChat__info-data{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.DataInChat__info-data .info-data--profile-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  background-color: #cccccc;
+  border-radius: 50%;
+}
+
+.DataInChat__info-data .DataInChat__info-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.info-text--name {
+  font-size: 19px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.info-text--last-connection {
+  font-size: 17px;
+  font-weight: 500;
+  color: #fff;
+}

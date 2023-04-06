@@ -6,7 +6,10 @@ const ChatContextProvider = ({ children }) => {
 
   const [chatOpened, setChatOpened] = useState(false);
 
-  const handleChatOpen = () => setChatOpened(!chatOpened);
+  const handleChatOpen = () => {
+    setChatOpened(!chatOpened);
+    console.log("Cliked!")
+  }
 
   return (
     <ChatContext.Provider value={{

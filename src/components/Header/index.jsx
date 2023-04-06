@@ -1,27 +1,11 @@
 import React from 'react';
-import SearchIcon from '@mui/icons-material/Search';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import './Header.css';
 
-const Header = () => {
-
-
+const Header = ({ children }) => {
 
   return(
     <header className="Header" id="Header">
-      <nav className='Header__nav'>
-        <section className="nav__logo-container">
-          <img src="" alt="kajlosapp" className="logo-container--logo" />
-        </section>
-        <section className="nav__options-container">
-          <figure className='options-container__icon-container'>
-            <SearchIcon />
-          </figure>
-          <figure className='options-container__icon-container'>
-            <MoreVertIcon />
-          </figure>
-        </section>
-      </nav>
+      {children}
     </header>
   )
 };
