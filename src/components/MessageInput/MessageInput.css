@@ -1,0 +1,60 @@
+.MessageInput {
+  position: fixed;
+  width: 100%;
+  max-width: 500px;
+  height: 58px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #f1f3f5;
+  padding: 4px 8px;
+  gap: 12px;
+  bottom: 0;
+}
+
+.MessageInput__input-container {
+  width: 90%;
+  height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.MessageInput__input-container input {
+  width: 100%;
+  height: 34px;
+  background-color: transparent;
+  outline: none;
+  border-radius: 16px;
+  padding: 0 12px;
+  border: 1px solid rgb(153, 75, 200);
+  transition: outline .25s, box-shadow .25s;
+}
+
+.MessageInput__input-container input:focus{
+  outline: 1px solid rgb(153, 75, 200);
+  box-shadow: 0 1px 3px 1.5px rgb(153, 75, 200);
+}
+
+.MessageInput__send-button {
+  width: 10%;
+  height: 36px;
+}
+
+.MessageInput__send-button button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background-color: rgb(153, 75, 200);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.MessageInput__send-button button svg {
+  width: 28px;
+  height: 28px;
+  margin-left: 4px;
+  object-fit: contain;
+  color: #fff;
+}
