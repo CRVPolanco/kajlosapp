@@ -1,10 +1,14 @@
 import React, { useState, createContext, useReducer } from 'react';
 import { chatsReducer, chatsInitialState } from '../../reducer/chatReducer';
 import { ADD_CHAT, SEND_MESSAGE } from '../../reducer/actions';
+import { genId } from '../../utils/genId';
+import useChatToLS from '../../hooks/useChatToLS';
 
 const ChatContext = createContext();
 
 const ChatContextProvider = ({ children }) => {
+
+  const { saveChats } = useChatToLS('chats');
 
   const [state, dispatch] = useReducer(chatsReducer, chatsInitialState);
 
@@ -27,7 +31,11 @@ const ChatContextProvider = ({ children }) => {
     setActualChat({ ...state.chats[getChat] });
   };
 
-  const handleNewChat = (data) => dispatch({ type: ADD_CHAT, payload: data });
+  const handleNewChat = (data) => {
+    const id = genId();
+    dispatch({ type: ADD_CHAT, payload: { ...data, id } });
+    saveChats(id, data);
+  };
   const handleNewMessage = (data) => dispatch({ type: SEND_MESSAGE, payload: data});
 
   return (

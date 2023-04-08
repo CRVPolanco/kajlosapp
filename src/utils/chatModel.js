@@ -1,6 +1,6 @@
-import { getSimpleDate } from "./getDate";
+import { getDate, getSimpleDate } from "./getDate";
 
-export const chatReducerModel = (id, data) => ({
+export const chatModel = (id, data) => ({
   name: data.name,
   description: data.description,
   lastMessageSend: data.description,
@@ -12,12 +12,12 @@ export const chatReducerModel = (id, data) => ({
   messages: [],
 });
 
-export const updateChatReducerModel = (chat, data) => ({
+export const updateChatModel = (chat, data) => ({
   ...chat,
   ...data,
 });
 
-export const sendMessageReducerModel = (chat, data, id) => ({
+export const sendMessageModel = (chat, data, id) => ({
   ...chat,
   messages: [
     ...chat.messages,
@@ -33,7 +33,7 @@ export const sendMessageReducerModel = (chat, data, id) => ({
   ],
 })
 
-export const deleteMessageReducerModel = (chat, id) => ({
+export const deleteMessageModel = (chat, id) => ({
   ...chat,
   messages: [
     ...chat.messages.filter((m) => m.id !== id),

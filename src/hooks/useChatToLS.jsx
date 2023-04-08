@@ -1,15 +1,20 @@
 import React from 'react';
+import { chatModel } from '../utils/chatModel';
 
 const useChatToLS = ( itemName ) => {
 
+  const isSomething = localStorage.getItem(itemName);
+
+  if(!isSomething) localStorage.setItem(itemName, JSON.stringify([]));
+
   const getChats = () => [...JSON.parse(localStorage.getItem(itemName))];
 
-  const saveChats = (chat) => {
+  const saveChats = (id, chat) => {
 
+    const chatParsed = chatModel(id, chat);
     const allChats = [...JSON.parse(localStorage.getItem(itemName))];
-    if(!allChats.length) return;
 
-    const newChatsToParse = [...allChats, chat];
+    const newChatsToParse = [...allChats, chatParsed];
     localStorage.setItem(itemName, JSON.stringify(newChatsToParse));
   }
 
