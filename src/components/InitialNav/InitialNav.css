@@ -6,7 +6,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 8px 12px;
-  background-color: rgba(153, 75, 200, 1);
+  background-color: transparent;
   z-index: 1;
 }
 .Header__nav .InitialNav__logo-container .logo-container--logo{

@@ -6,13 +6,17 @@ import './AllChats.css';
 
 const AllChats = () => {
 
-  const { chats } = useContext(ChatContext);
+  const { chats, searchValue } = useContext(ChatContext);
 
   return(
     <div className="AllChats">
-      {chats.map((c) => (
-        <MainChat data={c} />
-      ))}
+      {chats.map((c) => {
+        if(c.name.includes(searchValue))
+          return (
+            <MainChat data={c} />
+          )}
+        )
+      }
       <NewChatButton />
     </div>
   )

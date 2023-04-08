@@ -1,6 +1,5 @@
-import { genId } from '../utils/genId';
-import { getDate, getSimpleDate } from '../utils/getDate';
 import { ADD_CHAT, DELETE_CHAT, DELETE_MESSAGE, SEND_MESSAGE, UPDATE_CHAT } from "./actions";
+import { chatReducerModel, updateChatReducerModel, sendMessageReducerModel, deleteMessageReducerModel } from '../utils/chatModel';
 
 export const chatsInitialState = {
   chats: [],
@@ -13,18 +12,7 @@ export const chatsReducer = (state = chatsInitialState, action) => {
     case ADD_CHAT:
 
       const id = state.chats.length ? state.chats.length + 1 : 1;
-
-      const addNewChat = {
-        name: action.payload.name,
-        description: action.payload.description,
-        lastMessageSend: action.payload.description,
-        lastMessageHour: getSimpleDate(),
-        chatId: id,
-        notReadQuantity: 0,
-        lastSend: getDate(),
-        messagesQuantity: 0,
-        messages: [],
-      }
+      const addNewChat = chatReducerModel(id, action.payload);
 
       return {
         ...state,
@@ -37,27 +25,21 @@ export const chatsReducer = (state = chatsInitialState, action) => {
     case UPDATE_CHAT:
 
       const findToUpdate = state.chats.findIndex(c => c.chatId === action.payload.chatId);
+      const chatUpdated = updateChatReducerModel(state.chats[findToUpdate], action.payload)
 
-      const chatUpdated = {
-        ...state.chats[findChat],
-        name: action.payload.name,
-        description: action.payload.description,
-      }
-
-      const newData = state.chats.splice(findChat, findChat, chatUpdated);
+      const updatedChatArray = [...state.chats];
+      updatedChatArray.splice(findToUpdate, 1, chatUpdated);
 
       return {
         ...state,
         chats: [
-          ...newData,
+          ...updatedChatArray,
         ],
       };
 
     case DELETE_CHAT :
 
-      const findToDelete = state.chats.findIndex(c => c.chatId === action.payload.chatId);
-
-      const newChats = state.chats.slice(findToDelete, 1);
+      const newChats = state.chats.filter((c) => c.chatId !== action.payload.chatId);
 
       return {
         ...state,
@@ -69,33 +51,13 @@ export const chatsReducer = (state = chatsInitialState, action) => {
     case SEND_MESSAGE:
 
       const findChatToAppend = state.chats.findIndex(c => c.chatId === action.payload.chatId);
-      const findAllMessages = state.chats[findChatToAppend].messages;
-      const messageLength = findAllMessages.length + 1;
+      const findChat = state.chats[findChatToAppend];
+      const chatId = findAllMessages.length + 1;
 
-      const newCopy = [
-        ...findAllMessages,
-        {
-          text: action.payload.message,
-          datetime: getSimpleDate(),
-          id: messageLength,
-          isMine: action.payload.isMine ? true : false,
-          isRead: false,
-          isTaken: false,
-          isDelivered: true,
-        },
-      ];
-      const newChatToCopy = {
-        ...state.chats[findChatToAppend],
-        notReadQuantity: 0,
-        messagesQuantity: 0 ? 1 : state.chats[findChatToAppend].messagesQuantity + 1,
-        lastMessageSend: action.payload.message,
-        lastMessageHour: getSimpleDate(),
-        messages: [
-          ...newCopy,
-        ],
-      };
+      const newChatMessageAdded = sendMessageReducerModel(findChat, action.payload, chatId);
+
       const changed = state.chats.filter((c) => c.chatId !== action.payload.chatId);
-      const newToPaste = [newChatToCopy, ...changed];
+      const newToPaste = [newChatMessageAdded, ...changed];
 
       return {
         ...state,
@@ -106,28 +68,21 @@ export const chatsReducer = (state = chatsInitialState, action) => {
 
     case DELETE_MESSAGE:
 
-      const findChatToDeleteMessage = state.chats.findIndex((c) => c.chatId === action.payload.chatId);
+      const findToDeleteMessage = state.chats.findIndex((c) => c.chatId === action.payload.chatId);
+      const messageToDelete = findToDeleteMessage.findIndex((m) => m.id === action.payload.messageId);
 
-      const messages = state.chats[findChatToDeleteMessage].messages;
+      const newCopyToDelete = deleteMessageReducerModel(
+        state.chats[findToDeleteMessage],
+        state.chats[findToDeleteMessage].messages[messageToDelete],
+      );
 
-      const message = messages.findIndex(m => m.id === action.payload.messageId);
-
-      const newMessages = messages.slice(message, 1);
-
-      const newCopyToDelete = {
-        ...state.chats[findChatToDeleteMessage],
-        lastMessageSend: 'Message deleted',
-        messages: [
-          ...newMessages,
-        ],
-      };
-
-      const finalCopy = state.chats.splice(findChatToDeleteMessage, 1, newCopyToDelete);
+      const copyArray = [...state.chats];
+      copyArray.splice(findToDeleteMessage, 1, newCopyToDelete);
 
       return {
         ...state,
         chats: [
-          ...finalCopy,
+          ...copyArray,
         ],
       };
 

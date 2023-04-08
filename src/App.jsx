@@ -1,14 +1,15 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import { ChatContext } from './context/ChatContext';
 import Header from './components/Header';
+import Searcher from './components/Searcher';
 import InitialNav from './components/InitialNav';
+import DataInChat from './components/DataInChat/index';
 import MainContainer from './containers/MainContainer';
 import ChatsContainer from './containers/ChatsContainer';
-import UniqueChat from './containers/UniqueChat';
 import AllChats from './containers/AllChats';
-import DataInChat from './components/DataInChat/index';
-import NewChat from './components/NewChat';
 import Chat from './components/Chat';
+import NewChat from './components/NewChat';
+import UniqueChat from './containers/UniqueChat';
 import './styles/App.css';
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
   const {
     chatOpened,
     newChatOpened,
+    searcherOpened,
   } = useContext(ChatContext)
 
   return (
@@ -24,8 +26,9 @@ function App() {
         <>
           <Header>
             <InitialNav />
+            {searcherOpened && <Searcher />}
           </Header>
-          { newChatOpened && <NewChat /> }
+          {newChatOpened && <NewChat />}
           <ChatsContainer>
             <AllChats />
           </ChatsContainer>

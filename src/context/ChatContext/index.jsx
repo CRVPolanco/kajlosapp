@@ -8,14 +8,19 @@ const ChatContextProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(chatsReducer, chatsInitialState);
 
-  const [chatOpened, setChatOpened] = useState(false);
-  const [newChatOpened, setNewChatOpened] = useState(false);
+  const [chatData, setChatData] = useState({ name: '', description: '' });
+  const [searchValue, setSearchValue] = useState('');
   const [actualChat, setActualChat] = useState({});
 
-  const [chatData, setChatData] = useState({ name: '', description: '' });
+  const [chatOpened, setChatOpened] = useState(false);
+  const [newChatOpened, setNewChatOpened] = useState(false);
+  const [searcherOpened, setSearcherOpened] = useState(false);
 
   const handleChatOpen = () => setChatOpened(!chatOpened);
   const handleNewChatOpen = () => setNewChatOpened(!newChatOpened);
+  const handleSearchOpen = () => setSearcherOpened(!searcherOpened);
+
+  const handleSearchValue = (e) => setSearchValue(e.target.value);
 
   const handleSetActualChat = (chatId) => {
     const getChat = state.chats.findIndex(c => c.chatId === chatId);
@@ -23,7 +28,6 @@ const ChatContextProvider = ({ children }) => {
   };
 
   const handleNewChat = (data) => dispatch({ type: ADD_CHAT, payload: data });
-
   const handleNewMessage = (data) => dispatch({ type: SEND_MESSAGE, payload: data});
 
   return (
@@ -33,10 +37,14 @@ const ChatContextProvider = ({ children }) => {
       newChatOpened,
       chatData,
       actualChat,
+      searchValue,
+      searcherOpened,
       setChatData,
       handleChatOpen,
       handleNewChatOpen,
       handleNewChat,
+      handleSearchOpen,
+      handleSearchValue,
       handleSetActualChat,
       handleNewMessage,
     }}>
