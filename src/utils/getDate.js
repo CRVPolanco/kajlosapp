@@ -11,5 +11,11 @@ export const getSimpleDate = () => {
   const timestamp = Date.now();
   const date = new Date(timestamp);
 
-  return `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+  const hours = date.getHours().toString();
+  const minutes = date.getMinutes().toString();
+  const seconds = date.getSeconds().toString();
+
+  console.log(hours);
+
+  return `${hours.length === 1 ? `0${hours}` : hours}:${minutes.length === 1 ? `0${minutes}` : minutes}:${seconds.length === 1 ? `0${seconds}` : seconds}`;
 };

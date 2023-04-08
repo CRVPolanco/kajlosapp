@@ -1,4 +1,6 @@
 .UniqueChat {
   width: 100%;
-  height: calc(100vh - 132px);
+  height: calc(100vh - 120px);
+  overflow-x: hidden;
+  overflow-y: scroll;
 }

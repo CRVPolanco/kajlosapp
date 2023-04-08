@@ -20,6 +20,7 @@
   border: none;
   outline: none;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .NewChatButton--button svg {

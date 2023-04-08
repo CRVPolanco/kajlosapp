@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import SendIcon from '@mui/icons-material/Send';
 import './MessageInput.css';
 
-const MessageInput = () => {
+const MessageInput = ({ message, setMessage, sendMessage }) => {
 
-  const [message, setMessage] = useState('');
   const handleMessage = (e) => setMessage(e.target.value);
 
   return(
@@ -13,7 +12,7 @@ const MessageInput = () => {
         <input type="text" value={message} onChange={handleMessage}/>
       </div>
       <div className="MessageInput__send-button">
-        <button onClick={() => console.log('Send!')}>
+        <button onClick={() => sendMessage()}>
           <SendIcon />
         </button>
       </div>

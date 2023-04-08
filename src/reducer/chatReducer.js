@@ -12,13 +12,16 @@ export const chatsReducer = (state = chatsInitialState, action) => {
 
     case ADD_CHAT:
 
+      const id = state.chats.length ? state.chats.length + 1 : 1;
+
       const addNewChat = {
         name: action.payload.name,
         description: action.payload.description,
         lastMessageSend: action.payload.description,
-        chatId: genId(),
+        lastMessageHour: getSimpleDate(),
+        chatId: id,
         notReadQuantity: 0,
-        lastUsed: getDate(),
+        lastSend: getDate(),
         messagesQuantity: 0,
         messages: [],
       }
@@ -66,35 +69,38 @@ export const chatsReducer = (state = chatsInitialState, action) => {
     case SEND_MESSAGE:
 
       const findChatToAppend = state.chats.findIndex(c => c.chatId === action.payload.chatId);
+      const findAllMessages = state.chats[findChatToAppend].messages;
+      const messageLength = findAllMessages.length + 1;
 
-      const findAllMessages = state.chats.messages;
       const newCopy = [
         ...findAllMessages,
         {
           text: action.payload.message,
           datetime: getSimpleDate(),
-          id: state.chats[findAllMessages].length ? state.chats[findAllMessages].length + 1 : 1,
+          id: messageLength,
+          isMine: action.payload.isMine ? true : false,
           isRead: false,
           isTaken: false,
           isDelivered: true,
         },
       ];
-      const newChatToSplice = {
+      const newChatToCopy = {
         ...state.chats[findChatToAppend],
         notReadQuantity: 0,
         messagesQuantity: 0 ? 1 : state.chats[findChatToAppend].messagesQuantity + 1,
         lastMessageSend: action.payload.message,
+        lastMessageHour: getSimpleDate(),
         messages: [
           ...newCopy,
         ],
       };
-      const changed = state.chats.splice(findChatToAppend, 1, newChatToSplice);
-
+      const changed = state.chats.filter((c) => c.chatId !== action.payload.chatId);
+      const newToPaste = [newChatToCopy, ...changed];
 
       return {
         ...state,
         chats: [
-          ...changed,
+          ...newToPaste
         ],
       };
 

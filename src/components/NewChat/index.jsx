@@ -4,13 +4,18 @@ import './NewChat.css';
 
 const NewChat = () => {
 
-  const { handleNewChatOpen } = useContext(ChatContext);
+  const { handleNewChat, handleNewChatOpen } = useContext(ChatContext);
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
   const handleChangeName = (e) => setName(e.target.value);
   const handleChangeDescription = (e) => setDescription(e.target.value);
+
+  const handleCreateChat = () => {
+    handleNewChat({ name, description });
+    handleNewChatOpen();
+  }
 
   return(
     <section className='NewChat'>
@@ -30,7 +35,7 @@ const NewChat = () => {
         </div>
         <div className="NewChat__buttons">
           <button className="NewChat__buttons-standard"
-            onClick={handleNewChatOpen}
+            onClick={handleCreateChat}
           >
             Add
           </button>
