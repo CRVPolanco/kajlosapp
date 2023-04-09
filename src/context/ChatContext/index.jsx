@@ -1,6 +1,6 @@
 import React, { useState, createContext, useReducer } from 'react';
 import { chatsReducer, chatsInitialState } from '../../reducer/chatReducer';
-import { ADD_CHAT, DELETE_CHAT, SEND_MESSAGE, ERASE_CHAT, BLOCK_CHAT } from '../../reducer/actions';
+import { ADD_CHAT, DELETE_CHAT, SEND_MESSAGE, ERASE_CHAT, BLOCK_CHAT, DELETE_MESSAGE } from '../../reducer/actions';
 import { genId } from '../../utils/genId';
 import useChatToLS from '../../hooks/useChatToLS';
 
@@ -8,7 +8,7 @@ const ChatContext = createContext();
 
 const ChatContextProvider = ({ children }) => {
 
-  const { saveChats, saveMessages, deleteChat, eraseChat, blockChat, } = useChatToLS('chats');
+  const { saveChats, saveMessages, deleteChat, eraseChat, blockChat, deleteMessage } = useChatToLS('chats');
 
   const [state, dispatch] = useReducer(chatsReducer, chatsInitialState);
 
@@ -52,7 +52,7 @@ const ChatContextProvider = ({ children }) => {
   };
   const handleNewMessage = (message) => {
     dispatch({ type: SEND_MESSAGE, payload: message});
-    saveMessages(actualChat, message);
+    saveMessages(actualChat.chatId, message);
   };
   const handleDeleteChat = (chatId) => {
     dispatch({ type: DELETE_CHAT, payload: { chatId: chatId } });
@@ -71,6 +71,11 @@ const ChatContextProvider = ({ children }) => {
     dispatch({ type: BLOCK_CHAT, payload: { chatId: chatId } });
     blockChat(chatId);
     setOpenChatOptions(false);
+  }
+
+  const handleDeleteMessage = (messageId) => {
+    dispatch({ type: DELETE_MESSAGE, payload: { chatId: actualChat.chatId, messageId: messageId } });
+    deleteMessage(actualChat.chatId, messageId);
   }
 
   return (
@@ -94,6 +99,7 @@ const ChatContextProvider = ({ children }) => {
       handleChatOptions,
       handleSetActualChat,
       handleNewMessage,
+      handleDeleteMessage,
       handleDeleteChat,
       handleEraseChat,
       handleBlockChat,

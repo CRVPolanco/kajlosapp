@@ -13,11 +13,11 @@ const Chat = () => {
     chats,
     openModal,
     actualChat,
+    setOpenModal,
     handleNewMessage,
     handleDeleteChat,
     handleEraseChat,
     handleBlockChat,
-    setOpenModal,
   } = useContext(ChatContext);
 
   const index = chats.findIndex(c => c.chatId === actualChat.chatId);
@@ -49,9 +49,9 @@ const Chat = () => {
         {chats[index].isBlocked && <LockedChat unlock={blockAndClose} />}
         {chats[index].messages.map(m => (
           <Message
-            person={chats[index].name}
             key={m.id}
-            data={m}
+            chat={chats[index]}
+            message={m}
             checked={m.isRead}
             sendByMe={m.isMine}
           />

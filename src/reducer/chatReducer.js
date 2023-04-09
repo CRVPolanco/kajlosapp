@@ -13,7 +13,6 @@ import {
   blockChatModel,
   updateChatModel,
   sendMessageModel,
-  deleteMessageModel,
 } from '../utils/chatModel';
 
 export const chatsInitialState = {
@@ -82,22 +81,21 @@ export const chatsReducer = (state = chatsInitialState, action) => {
 
     case DELETE_MESSAGE:
 
-      const findToDeleteMessage = state.chats.findIndex((c) => c.chatId === action.payload.chatId);
-      const messageToDelete = findToDeleteMessage.findIndex((m) => m.id === action.payload.messageId);
+      const findCht = state.chats.findIndex(c => c.chatId === action.payload.chatId);
 
-      const newCopyToDelete = deleteMessageModel(
-        state.chats[findToDeleteMessage],
-        state.chats[findToDeleteMessage].messages[messageToDelete],
-      );
+      const allChatsToChange = [...state.chats];
+      const chatModified = state.chats[findCht];
 
-      const copyArray = [...state.chats];
-      copyArray.splice(findToDeleteMessage, 1, newCopyToDelete);
+      const changedMessages = chatModified.messages.filter(m => m.id !== action.payload.messageId);
+
+      const deletedMessage = { ...chatModified, messages: [ ...changedMessages ] };
+      allChatsToChange.splice(findCht, 1, deletedMessage);
 
       return {
         ...state,
         chats: [
-          ...copyArray,
-        ],
+          ...allChatsToChange,
+        ]
       };
 
     case ERASE_CHAT:

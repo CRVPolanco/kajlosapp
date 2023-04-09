@@ -27,7 +27,13 @@
 .Message__container .Message__data-time {
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: flex-end;
   gap: 8px;
   color: #aaa;
+}
+.Message__data-time svg {
+  width: 20px;
+  height: 20px;
+  color: #000;
 }

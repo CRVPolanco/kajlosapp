@@ -37,6 +37,7 @@ export const sendMessageModel = (chat, message) => ({
       text: message.message,
       datetime: getSimpleDate(),
       isMine: message.isMine,
+      canEdit: message.isMine,
       id: chat.messages.length ? chat.messages.length + 1 : 1,
       isRead: false,
       isTaken: false,
@@ -45,10 +46,17 @@ export const sendMessageModel = (chat, message) => ({
   ],
 })
 
-export const deleteMessageModel = (chat, id) => ({
-  ...chat,
-  lastMessageSend: 'Message deleted',
-  messages: [
-    ...chat.messages.filter((m) => m.id !== id),
-  ]
-})
+export const updateMessageModel = (chat, messageId, changes) => {
+  
+  const message = chat.messages[chat.messages.findIndex(m => m.id === messageId)];
+  const newMessage = { ...message, text: changes };
+  const newMessagesArray = [ ...chat.messages ];
+  newMessagesArray.splice(chat.messages.findIndex(m => m.id === messageId), 1, newMessage);
+
+  return {
+    ...chat,
+    messages: [
+      ...newMessagesArray,
+    ]
+  }
+}
