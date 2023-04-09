@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import { ChatContext } from '../../context/ChatContext';
+import PersonIcon from '@mui/icons-material/Person';
 import './MainChat.css';
 
 const MainChat = ({ data }) => {
@@ -15,7 +16,7 @@ const MainChat = ({ data }) => {
     <article className='MainChat' onClick={handleClickChat}>
       <div className="MainChat__info">
         <figure className='MainChat__info-icon'>
-          <img src="" alt="ProfileImage" className="MainChat__info-icon--img" />
+          <PersonIcon />
         </figure>
         <div className="MainChat__info-text">
           <h3 className="MainChat__info-text--name">{data.name}</h3>
@@ -23,9 +24,9 @@ const MainChat = ({ data }) => {
         </div>
       </div>
       <div className="MainChat__data">
-        <p className="MainChat__data--date">{data.lastMessageHour}</p>
-        <p className="MainChat__date--total_messages">
-          {data.notReadQuantity}
+        <p className="MainChat__data--date">{data.lastMessageHour.substring(0, 5)}</p>
+        <p className="MainChat__date--total-messages">
+          {data.notReadQuantity < 1 ? '' : data.notReadQuantity}
         </p>
       </div>
     </article>

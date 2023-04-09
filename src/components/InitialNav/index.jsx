@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { ChatContext } from '../../context/ChatContext';
 import SearchIcon from '@mui/icons-material/Search';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import './InitialNav.css';
 
 const InitialNav = () => {
@@ -16,9 +15,6 @@ const InitialNav = () => {
       <section className="InitialNav__options-container">
         <figure className='options-container__icon-container' onClick={handleSearchOpen}>
           <SearchIcon />
-        </figure>
-        <figure className='options-container__icon-container'>
-          <MoreVertIcon />
         </figure>
       </section>
     </nav>

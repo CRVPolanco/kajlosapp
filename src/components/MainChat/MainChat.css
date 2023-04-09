@@ -5,66 +5,53 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
 }
 .MainChat:hover {
   background-color: rgba(240, 240, 240, 0.82);
 }
-
 .MainChat__info {
   width: 85%;
-  height: 100%;
   display: flex;
-  gap: 12px;
+  align-items: center;
 }
-.MainChat__info-icon {
+.MainChat__info .MainChat__info-icon{
   width: 56px;
   height: 56px;
-  border-radius: 50%;
-  background-color: #cccccc;
 }
-.MainChat__info-icon .MainChat__info-icon--img{
+.MainChat__info-icon svg {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  background-color: #ccc;
+  color: #fff;
+  border-radius: 50%;
 }
-.MainChat__info .MainChat__info-text{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 4px;
+.MainChat__info .MainChat__info-text {
+  width: calc(100% - 56px);
+  padding: 0 12px;
+  overflow: hidden;
 }
-.MainChat__info-text .MainChat__info-text--name {
-  font-weight: bold;
-  font-size: 17px;
+.MainChat__info-text--name {
+  height: 22px;
+  overflow: hidden;
 }
-.MainChat__info-text .MainChat__info-text--message {
-  font-size: 15px;
-  font-weight: 500;
-  color: #bbbbbb;
+.MainChat__info-text--message {
+  height: 20px;
+  overflow: hidden;
 }
 .MainChat__data {
   width: 15%;
-  height: 100%;
+  padding: 0 6px;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 }
-.MainChat__data .MainChat__data--date {
-  color: rgba(153, 75, 200, 0.75);
+.MainChat__data--date {
+  height: 22px;
+  color: rgb(153, 75, 200);
   font-weight: bold;
 }
-.MainChat__data .MainChat__date--total_messages {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  padding: 2px;
-  font-size: 14px;
-  background-color:rgba(153, 75, 200, 0.75);
-  color: #fff;
-  font-weight: bold;
-  letter-spacing: 1px;
-  border-radius: 50%;
-}
+.MainChat__data--total-messages {
 
+}

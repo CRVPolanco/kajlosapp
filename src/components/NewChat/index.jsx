@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useRef, useContext } from 'react';
 import { ChatContext } from '../../context/ChatContext';
 import './NewChat.css';
 
@@ -21,7 +21,7 @@ const NewChat = () => {
     <section className='NewChat'>
       <div className="NewChat__container">
         <h3 className='NewChat__title'>Add new</h3>
-        <div className="NewChat__inputs">
+        <form className="NewChat__inputs" encType='multipart/form-data'>
           <input type="text" className="NewChat__input--standard"
             value={name}
             placeholder="Chat name"
@@ -32,7 +32,7 @@ const NewChat = () => {
             placeholder="Chat description"
             onChange={handleChangeDescription}
           />
-        </div>
+        </form>
         <div className="NewChat__buttons">
           <button className="NewChat__buttons-standard"
             onClick={handleCreateChat}

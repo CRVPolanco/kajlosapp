@@ -1,6 +1,6 @@
 import React, { useState, createContext, useReducer } from 'react';
 import { chatsReducer, chatsInitialState } from '../../reducer/chatReducer';
-import { ADD_CHAT, SEND_MESSAGE } from '../../reducer/actions';
+import { ADD_CHAT, DELETE_CHAT, SEND_MESSAGE, ERASE_CHAT, BLOCK_CHAT } from '../../reducer/actions';
 import { genId } from '../../utils/genId';
 import useChatToLS from '../../hooks/useChatToLS';
 
@@ -8,21 +8,35 @@ const ChatContext = createContext();
 
 const ChatContextProvider = ({ children }) => {
 
-  const { saveChats } = useChatToLS('chats');
+  const { saveChats, saveMessages, deleteChat, eraseChat, blockChat, } = useChatToLS('chats');
 
   const [state, dispatch] = useReducer(chatsReducer, chatsInitialState);
 
   const [chatData, setChatData] = useState({ name: '', description: '' });
+
   const [searchValue, setSearchValue] = useState('');
   const [actualChat, setActualChat] = useState({});
 
   const [chatOpened, setChatOpened] = useState(false);
   const [newChatOpened, setNewChatOpened] = useState(false);
   const [searcherOpened, setSearcherOpened] = useState(false);
+  const [openChatOptions, setOpenChatOptions] = useState(false);
 
-  const handleChatOpen = () => setChatOpened(!chatOpened);
+  const [openModal, setOpenModal] = useState({ erase: false, block: false, delete: false });
+
+  const handleChatOpen = () => {
+    setOpenChatOptions(false);
+    setChatOpened(!chatOpened);
+    if(!!chatOpened) setSearcherOpened(false);
+  };
   const handleNewChatOpen = () => setNewChatOpened(!newChatOpened);
-  const handleSearchOpen = () => setSearcherOpened(!searcherOpened);
+
+  const handleChatOptions = () => setOpenChatOptions(!openChatOptions);
+
+  const handleSearchOpen = () => {
+    setSearcherOpened(!searcherOpened)
+    setSearchValue('');
+  };
 
   const handleSearchValue = (e) => setSearchValue(e.target.value);
 
@@ -36,7 +50,28 @@ const ChatContextProvider = ({ children }) => {
     dispatch({ type: ADD_CHAT, payload: { ...data, id } });
     saveChats(id, data);
   };
-  const handleNewMessage = (data) => dispatch({ type: SEND_MESSAGE, payload: data});
+  const handleNewMessage = (message) => {
+    dispatch({ type: SEND_MESSAGE, payload: message});
+    saveMessages(actualChat, message);
+  };
+  const handleDeleteChat = (chatId) => {
+    dispatch({ type: DELETE_CHAT, payload: { chatId: chatId } });
+    deleteChat(chatId);
+    setActualChat({});
+    handleChatOpen();
+  }
+
+  const handleEraseChat = (chatId) => {
+    dispatch({ type: ERASE_CHAT, payload: { chatId: chatId } });
+    eraseChat(chatId);
+    setOpenChatOptions(false);
+  }
+
+  const handleBlockChat = (chatId) => {
+    dispatch({ type: BLOCK_CHAT, payload: { chatId: chatId } });
+    blockChat(chatId);
+    setOpenChatOptions(false);
+  }
 
   return (
     <ChatContext.Provider value={{
@@ -47,14 +82,21 @@ const ChatContextProvider = ({ children }) => {
       actualChat,
       searchValue,
       searcherOpened,
+      openChatOptions,
+      openModal,
+      setOpenModal,
       setChatData,
       handleChatOpen,
       handleNewChatOpen,
       handleNewChat,
       handleSearchOpen,
       handleSearchValue,
+      handleChatOptions,
       handleSetActualChat,
       handleNewMessage,
+      handleDeleteChat,
+      handleEraseChat,
+      handleBlockChat,
     }}>
       {children}
     </ChatContext.Provider>

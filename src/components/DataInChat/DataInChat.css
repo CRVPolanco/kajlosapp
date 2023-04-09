@@ -1,40 +1,70 @@
+.Header__nav {
+  position: relative;
+}
+
 .DataInChat__info {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 .DataInChat__info .DataInChat__info-return {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   color: #fff;
+  cursor: pointer;
+}
+.DataInChat__info-return svg {
+  width: 100%;
+  height: 100%;
 }
 .DataInChat__info .DataInChat__info-data{
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 12px;
 }
-.DataInChat__info-data .info-data--profile-icon {
+.DataInChat__info-data svg {
   width: 48px;
   height: 48px;
   object-fit: cover;
   background-color: #cccccc;
   border-radius: 50%;
+  color: #fff;
+}
+.info-data--profile-icon {
+  height: 100%;
 }
 
 .DataInChat__info-data .DataInChat__info-text {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 .info-text--name {
+  width: 100%;
+  height: 24px;
   font-size: 19px;
   font-weight: bold;
   color: #fff;
+  overflow: hidden;
 }
 
 .info-text--last-connection {
   font-size: 17px;
   font-weight: 500;
+  color: #fff;
+}
+
+.DataInChat__options-icon {
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+}
+.DataInChat__options-icon svg {
+  width: 100%;
+  height: 100%;
   color: #fff;
 }

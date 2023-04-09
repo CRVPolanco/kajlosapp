@@ -1,17 +1,20 @@
 import {
   ADD_CHAT,
   DELETE_CHAT,
+  ERASE_CHAT,
+  BLOCK_CHAT,
   DELETE_MESSAGE,
   SEND_MESSAGE,
-  UPDATE_CHAT
+  UPDATE_CHAT,
 } from "./actions";
 import {
   chatModel,
+  eraseChatModel,
+  blockChatModel,
   updateChatModel,
   sendMessageModel,
-  deleteMessageModel
+  deleteMessageModel,
 } from '../utils/chatModel';
-import { genId } from '../utils/genId';
 
 export const chatsInitialState = {
   chats: localStorage.getItem('chats') ? JSON.parse(localStorage.getItem('chats')) : [],
@@ -63,7 +66,7 @@ export const chatsReducer = (state = chatsInitialState, action) => {
 
       const findChatToAppend = state.chats.findIndex(c => c.chatId === action.payload.chatId);
       const findChat = state.chats[findChatToAppend];
-      const chatId = findAllMessages.length + 1;
+      const chatId = state.chats.length + 1;
 
       const newChatMessageAdded = sendMessageModel(findChat, action.payload, chatId);
 
@@ -94,6 +97,38 @@ export const chatsReducer = (state = chatsInitialState, action) => {
         ...state,
         chats: [
           ...copyArray,
+        ],
+      };
+
+    case ERASE_CHAT:
+
+      const findToErase = state.chats.findIndex(c => c.chatId === action.payload.chatId);
+
+      const erase = eraseChatModel(state.chats[findToErase]);
+
+      const erasedChat = [...state.chats];
+      erasedChat.splice(findToErase, 1, erase);
+
+      return {
+        ...state,
+        chats: [
+          ...erasedChat,
+        ]
+      };
+
+    case BLOCK_CHAT:
+
+      const findToBlock = state.chats.findIndex(c => c.chatId === action.payload.chatId);
+
+      const block = blockChatModel(state.chats[findToBlock]);
+
+      const blockedChat = [...state.chats];
+      blockedChat.splice(findToBlock, 1, block);
+
+      return {
+        ...state,
+        chats: [
+          ...blockedChat,
         ],
       };
 

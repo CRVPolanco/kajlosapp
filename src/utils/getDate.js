@@ -15,7 +15,5 @@ export const getSimpleDate = () => {
   const minutes = date.getMinutes().toString();
   const seconds = date.getSeconds().toString();
 
-  console.log(hours);
-
   return `${hours.length === 1 ? `0${hours}` : hours}:${minutes.length === 1 ? `0${minutes}` : minutes}:${seconds.length === 1 ? `0${seconds}` : seconds}`;
 };

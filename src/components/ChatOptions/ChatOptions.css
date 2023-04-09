@@ -1,0 +1,37 @@
+.ChatOptions {
+  position: absolute;
+  display: flex;
+  top: 70px;
+  right: 32px;
+  left: 0;
+  margin: 0 0 0 auto;
+  width: 125px;
+  z-index: 1;
+  box-shadow: 1px 2px 3px 2px #cccccc;
+  border-radius: 8px;
+}
+
+.ChatOptions__container {
+  width: 100%;
+  background-color: #f3f2f1;
+}
+
+.ChatOptions__container ul li {
+  padding: 12px 16px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.ChatOptions__container ul li:hover {
+  background-color: #eeeeee;
+}
+
+@keyframes appear{
+  from {
+    visibility: 0;
+  }
+  to {
+    visibility: 1;
+  }
+}

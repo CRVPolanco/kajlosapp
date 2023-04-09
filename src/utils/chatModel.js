@@ -5,6 +5,7 @@ export const chatModel = (id, data) => ({
   description: data.description,
   lastMessageSend: data.description,
   lastMessageHour: getSimpleDate(),
+  isBlocked: false,
   chatId: id,
   notReadQuantity: 0,
   lastSend: getDate(),
@@ -17,15 +18,26 @@ export const updateChatModel = (chat, data) => ({
   ...data,
 });
 
-export const sendMessageModel = (chat, data, id) => ({
+export const eraseChatModel = (chat) => ({
   ...chat,
+  messages: [],
+});
+
+export const blockChatModel = (chat) => ({
+  ...chat,
+  isBlocked: !chat.isBlocked,
+});
+
+export const sendMessageModel = (chat, message) => ({
+  ...chat,
+  lastMessageSend: message.message,
   messages: [
     ...chat.messages,
     {
-      text: data.message,
+      text: message.message,
       datetime: getSimpleDate(),
-      isMine: data.isMine,
-      id: id,
+      isMine: message.isMine,
+      id: chat.messages.length ? chat.messages.length + 1 : 1,
       isRead: false,
       isTaken: false,
       isDelivered: true,
@@ -35,6 +47,7 @@ export const sendMessageModel = (chat, data, id) => ({
 
 export const deleteMessageModel = (chat, id) => ({
   ...chat,
+  lastMessageSend: 'Message deleted',
   messages: [
     ...chat.messages.filter((m) => m.id !== id),
   ]

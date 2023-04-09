@@ -1,5 +1,5 @@
 import React from 'react';
-import { chatModel } from '../utils/chatModel';
+import { chatModel, sendMessageModel, eraseChatModel, blockChatModel } from '../utils/chatModel';
 
 const useChatToLS = ( itemName ) => {
 
@@ -31,6 +31,35 @@ const useChatToLS = ( itemName ) => {
     const sortedArray = newChatArray.sort((a, b) => a.chatId - b.chatId);
 
     localStorage.setItem(itemName, JSON.stringify(sortedArray));
+  };
+
+  const eraseChat = (chatId) => {
+
+    const allChats = [...JSON.parse(localStorage.getItem(itemName))];
+    if(!allChats.length) return;
+
+    const findChat = allChats.findIndex((c) => c.chatId === chatId);
+
+    const erasedChat = eraseChatModel(allChats[findChat]);
+
+    allChats.splice(findChat, 1, erasedChat);
+
+    localStorage.setItem(itemName, JSON.stringify([...allChats]));
+
+  }
+
+  const blockChat = (chatId) => {
+    const allChats = [...JSON.parse(localStorage.getItem(itemName))];
+    if(!allChats.length) return;
+
+    const findChat = allChats.findIndex((c) => c.chatId === chatId);
+
+    const blockedChat = blockChatModel(allChats[findChat]);
+
+    allChats.splice(findChat, 1, blockedChat);
+
+    localStorage.setItem(itemName, JSON.stringify([...allChats]));
+
   }
 
   const deleteChat = (chatId) => {
@@ -39,26 +68,21 @@ const useChatToLS = ( itemName ) => {
 
     if(!allChats.length) return;
 
-    const findChat = allChats.findIndex((c) => c.chatId === chatId);
-
-    const filteredChats = findChat.filter((c) => c.chatId !== chatId);
+    const filteredChats = allChats.filter((c) => c.chatId !== chatId);
     localStorage.setItem(itemName, JSON.stringify(filteredChats));
 
   };
 
-  const saveMessages = (chatId, message) => {
+  const saveMessages = (chat, message) => {
 
+    const parsedChat = sendMessageModel(chat, message);
     const allChats = [...JSON.parse(localStorage.getItem(itemName))];
 
     if(!allChats.length) return;
 
-    const findChat = allChats.findIndex((c) => c.chatId === chatId);
-    const getAllMessages = allChats[findChat].messages;
+    const filteredArray = allChats.filter((c) => c.chatId !== chat.chatId);
+    const modifiedArray = [parsedChat, ...filteredArray];
 
-    const modifiedChat = { ...allChats[findChat], messages: [...getAllMessages, message]};
-    allChats[findChat] = { ...modifiedChat };
-
-    const modifiedArray = [...allChats];
     localStorage.setItem(itemName, JSON.stringify(modifiedArray));
   }
 
@@ -67,7 +91,7 @@ const useChatToLS = ( itemName ) => {
   }
 
 
-  return { getChats, saveChats, updateChat, deleteChat, saveMessages };
+  return { getChats, saveChats, updateChat, eraseChat, blockChat, deleteChat, saveMessages };
 }
 
 export default useChatToLS;
