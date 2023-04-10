@@ -1,0 +1,74 @@
+.Edit {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  background-color: rgba(7,8,9,0.8);
+}
+.Edit__container {
+  width: 75%;
+  padding: 8px 16px;
+  margin: 0 auto;
+  max-width: 350px;
+  background-color: #f5f7f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px 2px #ccc;
+}
+
+.Edit__container .Edit__title {
+  color: #000;
+  font-size: 22px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+.Edit__input {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+.Edit__input .Edit__input-standard {
+  width: 90%;
+  height: 34px;
+  margin: 0 auto;
+  border-radius: 8px;
+  border: 2px solid rgba(153, 75, 200);
+  outline: none;
+  background-color: #fff;
+  padding: 4px 8px;
+  transition: outline 0.5s, box-shadow 0.5s;
+}
+.Edit__input-standard:hover {
+  box-shadow: 0 1.5px 5px 2px rgba(153, 75, 200);
+}
+.Edit__container .Edit__buttons {
+  margin: 24px 0 12px 0;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+.Edit__buttons .Edit__standard:nth-child(1), .Edit__buttons .Edit__standard:nth-child(2){
+  width: 40%;
+}
+
+.Edit__standard{
+  background-color: transparent;
+  border: 2px solid rgba(153, 75, 200);
+  padding: 4px 6px;
+  font-size: 18px;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px 1px rgba(153, 75, 200);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color .4s;
+}
+.Edit__standard:hover {
+  background-color: #d9d9d9;
+}

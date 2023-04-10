@@ -20,17 +20,16 @@ const useChatToLS = ( itemName ) => {
 
   const updateChat = (chatId, changes) => {
 
+    const { name, description } = changes;
+
     const allChats = [...JSON.parse(localStorage.getItem(itemName))];
 
-    if(!allChats.length) return;
-
     const findChat = allChats.findIndex((c) => c.chatId === chatId);
-    const filteredChats = findChat.filter((c) => c.chatId !== chatId);
+    const chat = { ...allChats[findChat], name: name, description: description };
 
-    const newChatArray = [...filteredChats, { ...allChats[findChat], ...changes }];
-    const sortedArray = newChatArray.sort((a, b) => a.chatId - b.chatId);
+    allChats.splice(findChat, 1, chat);
 
-    localStorage.setItem(itemName, JSON.stringify(sortedArray));
+    localStorage.setItem(itemName, JSON.stringify([...allChats]));
   };
 
   const eraseChat = (chatId) => {
@@ -94,24 +93,20 @@ const useChatToLS = ( itemName ) => {
     const chatToUpdate = allChats[chatIndex];
 
     const messageIndex = chatToUpdate.messages.findIndex(m => m.id === messageId);
-    const filteredMessages = chatToUpdate.messages.filter(m => m.id === messageId);
+    const messageToUpdate = chatToUpdate.messages[messageIndex];
 
-    const newMessages = [ 
-      ...filteredMessages, 
-      { 
-        ...chatToUpdate.messages[messageIndex], 
-        text: changes 
-      }, 
-    ];
+    const newMessage = { ...messageToUpdate, text: changes };
+    const allMessages = [...chatToUpdate.messages];
 
-    const changed = { 
-      ...chatToUpdate, 
-      messages: [ 
-        ...newMessages.sort((a, b) => Number(a.id) - Number(b.id)) 
-      ], 
+    allMessages.splice(messageIndex, 1, newMessage);
+
+    const newChatToUpdate = {
+      ...chatToUpdate,
+      lastMessageSend: allMessages[allMessages.length - 1].text,
+      messages: [ ...allMessages ],
     };
 
-    allChats.splice(chatIndex, 1, changed);
+    allChats.splice(chatIndex, 1, newChatToUpdate);
 
     localStorage.setItem(itemName, JSON.stringify([...allChats]));
   }

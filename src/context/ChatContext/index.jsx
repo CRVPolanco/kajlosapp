@@ -1,6 +1,6 @@
 import React, { useState, createContext, useReducer } from 'react';
 import { chatsReducer, chatsInitialState } from '../../reducer/chatReducer';
-import { ADD_CHAT, DELETE_CHAT, SEND_MESSAGE, ERASE_CHAT, BLOCK_CHAT, DELETE_MESSAGE } from '../../reducer/actions';
+import { ADD_CHAT, DELETE_CHAT, SEND_MESSAGE, ERASE_CHAT, BLOCK_CHAT, DELETE_MESSAGE, UPDATE_CHAT, UPDATE_MESSAGE } from '../../reducer/actions';
 import { genId } from '../../utils/genId';
 import useChatToLS from '../../hooks/useChatToLS';
 
@@ -8,37 +8,35 @@ const ChatContext = createContext();
 
 const ChatContextProvider = ({ children }) => {
 
-  const { saveChats, saveMessages, deleteChat, eraseChat, blockChat, deleteMessage } = useChatToLS('chats');
+  const { saveChats, updateChat, deleteChat, eraseChat, blockChat, saveMessages, updateMessages, deleteMessage } = useChatToLS('chats');
 
   const [state, dispatch] = useReducer(chatsReducer, chatsInitialState);
-
-  const [chatData, setChatData] = useState({ name: '', description: '' });
-
-  const [searchValue, setSearchValue] = useState('');
-  const [actualChat, setActualChat] = useState({});
 
   const [chatOpened, setChatOpened] = useState(false);
   const [newChatOpened, setNewChatOpened] = useState(false);
   const [searcherOpened, setSearcherOpened] = useState(false);
   const [openChatOptions, setOpenChatOptions] = useState(false);
 
-  const [openModal, setOpenModal] = useState({ erase: false, block: false, delete: false });
+  const [openModal, setOpenModal] = useState({ edit: false, erase: false, block: false, delete: false });
+
+  const [actualChat, setActualChat] = useState({});
+  const [searchValue, setSearchValue] = useState('');
+  const [chatData, setChatData] = useState({ name: '', description: '' });
 
   const handleChatOpen = () => {
     setOpenChatOptions(false);
     setChatOpened(!chatOpened);
     if(!!chatOpened) setSearcherOpened(false);
   };
-  const handleNewChatOpen = () => setNewChatOpened(!newChatOpened);
 
+  const handleNewChatOpen = () => setNewChatOpened(!newChatOpened);
   const handleChatOptions = () => setOpenChatOptions(!openChatOptions);
+  const handleSearchValue = (e) => setSearchValue(e.target.value);
 
   const handleSearchOpen = () => {
     setSearcherOpened(!searcherOpened)
     setSearchValue('');
   };
-
-  const handleSearchValue = (e) => setSearchValue(e.target.value);
 
   const handleSetActualChat = (chatId) => {
     const getChat = state.chats.findIndex(c => c.chatId === chatId);
@@ -50,10 +48,18 @@ const ChatContextProvider = ({ children }) => {
     dispatch({ type: ADD_CHAT, payload: { ...data, id } });
     saveChats(id, data);
   };
-  const handleNewMessage = (message) => {
-    dispatch({ type: SEND_MESSAGE, payload: message});
-    saveMessages(actualChat.chatId, message);
-  };
+
+  const handleEditChat = (chatId, changes) => {
+    dispatch({ type: UPDATE_CHAT,
+      payload: {
+        chatId: chatId,
+        name: changes.name,
+        description: changes.description
+      }
+    });
+    updateChat(chatId, changes);
+  }
+
   const handleDeleteChat = (chatId) => {
     dispatch({ type: DELETE_CHAT, payload: { chatId: chatId } });
     deleteChat(chatId);
@@ -68,16 +74,25 @@ const ChatContextProvider = ({ children }) => {
   }
 
   const handleBlockChat = (chatId) => {
-    dispatch({ type: BLOCK_CHAT, payload: { chatId: chatId } });
+    dispatch({ type: BLOCK_CHAT, payload: { chatId } });
     blockChat(chatId);
     setOpenChatOptions(false);
   }
 
+  const handleNewMessage = (message) => {
+    dispatch({ type: SEND_MESSAGE, payload: message });
+    saveMessages(actualChat.chatId, message);
+  };
+
+  const handleEditMessageEvent = (chatId, messageId, changes) => {
+    dispatch({ type: UPDATE_MESSAGE, payload: { chatId, messageId, changes } });
+    updateMessages(chatId, messageId, changes);
+  };
+
   const handleDeleteMessage = (messageId) => {
-    dispatch({ type: DELETE_MESSAGE, payload: { chatId: actualChat.chatId, messageId: messageId } });
+    dispatch({ type: DELETE_MESSAGE, payload: { chatId: actualChat.chatId, messageId }});
     deleteMessage(actualChat.chatId, messageId);
   }
-
   return (
     <ChatContext.Provider value={{
       chats: state.chats,
@@ -91,18 +106,20 @@ const ChatContextProvider = ({ children }) => {
       openModal,
       setOpenModal,
       setChatData,
+      handleSearchValue,
+      handleSetActualChat,
       handleChatOpen,
       handleNewChatOpen,
-      handleNewChat,
       handleSearchOpen,
-      handleSearchValue,
       handleChatOptions,
-      handleSetActualChat,
-      handleNewMessage,
-      handleDeleteMessage,
-      handleDeleteChat,
-      handleEraseChat,
+      handleNewChat,
+      handleEditChat,
       handleBlockChat,
+      handleEraseChat,
+      handleDeleteChat,
+      handleNewMessage,
+      handleEditMessageEvent,
+      handleDeleteMessage,
     }}>
       {children}
     </ChatContext.Provider>

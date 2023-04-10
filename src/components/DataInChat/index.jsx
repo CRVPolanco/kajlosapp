@@ -1,15 +1,16 @@
 import React, { useState, useContext } from 'react';
 import { ChatContext } from '../../context/ChatContext';
+import ChatOptions from '../ChatOptions';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import PersonIcon from '@mui/icons-material/Person';
 import './DataInChat.css';
-import ChatOptions from '../ChatOptions';
 
 const DataInChat = () => {
 
-  const { actualChat, handleChatOpen, handleChatOptions } = useContext(ChatContext);
+  const { chats, actualChat, handleChatOpen } = useContext(ChatContext);
 
+  const index = chats.findIndex(c => c.chatId === actualChat.chatId);
   const [options, setOptions] = useState(false)
 
   return(
@@ -23,8 +24,8 @@ const DataInChat = () => {
             <PersonIcon />
           </figure>
           <div className="DataInChat__info-text">
-            <h3 className="info-text--name">{actualChat.name}</h3>
-            <p className="info-text--last-connection">{actualChat.lastMessageHour}</p>
+            <h3 className="info-text--name">{chats[index].name}</h3>
+            <p className="info-text--last-connection">{chats[index].description}</p>
           </div>
         </div>
       </section>

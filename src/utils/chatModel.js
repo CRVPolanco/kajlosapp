@@ -20,6 +20,7 @@ export const updateChatModel = (chat, data) => ({
 
 export const eraseChatModel = (chat) => ({
   ...chat,
+  lastMessageSend: 'Chat has been cleared',
   messages: [],
 });
 
@@ -47,7 +48,7 @@ export const sendMessageModel = (chat, message) => ({
 })
 
 export const updateMessageModel = (chat, messageId, changes) => {
-  
+
   const message = chat.messages[chat.messages.findIndex(m => m.id === messageId)];
   const newMessage = { ...message, text: changes };
   const newMessagesArray = [ ...chat.messages ];

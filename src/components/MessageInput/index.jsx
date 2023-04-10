@@ -9,7 +9,7 @@ const MessageInput = ({ blocked, message, setMessage, sendMessage }) => {
   return(
     <aside className='MessageInput'>
       <div className="MessageInput__input-container">
-        <input type="text" value={message} onChange={handleMessage}/>
+        <input type="text" value={blocked ? '' : message} onChange={handleMessage}/>
       </div>
       <div className="MessageInput__send-button">
         <button

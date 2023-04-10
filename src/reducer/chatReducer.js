@@ -1,11 +1,12 @@
 import {
   ADD_CHAT,
+  UPDATE_CHAT,
   DELETE_CHAT,
   ERASE_CHAT,
   BLOCK_CHAT,
   DELETE_MESSAGE,
   SEND_MESSAGE,
-  UPDATE_CHAT,
+  UPDATE_MESSAGE,
 } from "./actions";
 import {
   chatModel,
@@ -37,22 +38,30 @@ export const chatsReducer = (state = chatsInitialState, action) => {
 
     case UPDATE_CHAT:
 
-      const findToUpdate = state.chats.findIndex(c => c.chatId === action.payload.chatId);
-      const chatUpdated = updateChatModel(state.chats[findToUpdate], action.payload)
+      const getAllChats = [...state.chats];
+      const findToUpdate = getAllChats.findIndex(c => c.chatId === action.payload.chatId);
 
-      const updatedChatArray = [...state.chats];
-      updatedChatArray.splice(findToUpdate, 1, chatUpdated);
+      const chat = {
+        ...getAllChats[findToUpdate],
+        name: action.payload.name,
+        description: action.payload.description,
+      }
+
+      getAllChats.splice(findToUpdate, 1, chat);
+
+      console.log(getAllChats);
 
       return {
         ...state,
         chats: [
-          ...updatedChatArray,
+          ...getAllChats,
         ],
       };
 
     case DELETE_CHAT :
 
-      const newChats = state.chats.filter((c) => c.chatId !== action.payload.chatId);
+      const allChatsToDelete = [...state.chats];
+      const newChats = allChatsToDelete.filter((c) => c.chatId !== action.payload.chatId);
 
       return {
         ...state,
@@ -79,6 +88,36 @@ export const chatsReducer = (state = chatsInitialState, action) => {
         ],
       };
 
+    case UPDATE_MESSAGE:
+
+    const allChats = [...state.chats];
+    const chatIndex = allChats.findIndex(c => c.chatId === action.payload.chatId);
+
+    const chatToUpdate = allChats[chatIndex];
+
+    const messageIndex = chatToUpdate.messages.findIndex(m => m.id === action.payload.messageId);
+    const messageToUpdate = chatToUpdate.messages[messageIndex];
+
+    const newMessage = { ...messageToUpdate, text: action.payload.changes };
+    const allMessages = [...chatToUpdate.messages];
+
+    allMessages.splice(messageIndex, 1, newMessage);
+
+    const newChatToUpdate = {
+      ...chatToUpdate,
+      lastMessageSend: allMessages[allMessages.length - 1].text,
+      messages: [ ...allMessages ],
+    };
+
+    allChats.splice(chatIndex, 1, newChatToUpdate);
+
+      return {
+        ...state,
+        chats: [
+          ...allChats,
+        ]
+      }
+
     case DELETE_MESSAGE:
 
       const findCht = state.chats.findIndex(c => c.chatId === action.payload.chatId);
@@ -86,9 +125,15 @@ export const chatsReducer = (state = chatsInitialState, action) => {
       const allChatsToChange = [...state.chats];
       const chatModified = state.chats[findCht];
 
+      const findMessage = chatModified.messages.findIndex(m => m.id === action.payload.messageId);
+
       const changedMessages = chatModified.messages.filter(m => m.id !== action.payload.messageId);
 
-      const deletedMessage = { ...chatModified, messages: [ ...changedMessages ] };
+      const deletedMessage = {
+        ...chatModified,
+        lastMessageSend: changedMessages[changedMessages.length - 1]?.text,
+        messages: [ ...changedMessages ]
+      };
       allChatsToChange.splice(findCht, 1, deletedMessage);
 
       return {

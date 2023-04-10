@@ -3,7 +3,7 @@ import './Alert.css';
 
 const Alert = ({ title, onclickEvent, closeEvent }) => {
 
-  const handleOnClickEvent = () => {
+  const handleEvent = () => {
     onclickEvent();
     closeEvent();
   }
@@ -13,7 +13,7 @@ const Alert = ({ title, onclickEvent, closeEvent }) => {
       <div className="Alert__container">
         <h3 className="Alert__title">{title}</h3>
         <div className="Alert__buttons">
-          <button className="Alert__standard" onClick={onclickEvent}>Confirm</button>
+          <button className="Alert__standard" onClick={handleEvent}>Confirm</button>
           <button className="Alert__standard" onClick={closeEvent}>Cancel</button>
         </div>
       </div>

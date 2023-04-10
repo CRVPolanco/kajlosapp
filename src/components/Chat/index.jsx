@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { ChatContext } from '../../context/ChatContext';
-import ChatOptions from '../ChatOptions';
-import Message from '../Message';
-import MessageInput from '../MessageInput/';
 import Alert from '../Alert';
 import LockedChat from '../LockedChat';
+import Edit from '../Edit';
+import Message from '../Message';
+import MessageInput from '../MessageInput/';
 import './Chat.css';
 
 const Chat = () => {
@@ -15,6 +15,7 @@ const Chat = () => {
     actualChat,
     setOpenModal,
     handleNewMessage,
+    handleEditChat,
     handleDeleteChat,
     handleEraseChat,
     handleBlockChat,
@@ -77,6 +78,13 @@ const Chat = () => {
           onclickEvent={() => handleDeleteChat(actualChat.chatId)}
           closeEvent={() => setOpenModal({ ...openModal, delete: !openModal.delete })}
         />
+      }
+      {openModal.edit &&
+      <Edit
+        actualChat={chats[index]}
+        closeEvent={() => setOpenModal({ ...openModal, edit: !openModal.edit })}
+        onclickEvent={handleEditChat}
+      />
       }
       <MessageInput
         blocked={chats[index].isBlocked}

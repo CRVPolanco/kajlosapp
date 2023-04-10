@@ -23,6 +23,11 @@
 .Message__container .Message__data-text p {
   margin-bottom: 4px;
 }
+.Message__data-text textarea {
+  width: 100%;
+  min-height: 28px;
+  resize: none;
+}
 
 .Message__container .Message__data-time {
   display: flex;

@@ -1,11 +1,20 @@
 import React, { useContext } from 'react';
 import { ChatContext } from '../../context/ChatContext';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteSweepSharpIcon from '@mui/icons-material/DeleteSweepSharp';
+import BlockSharpIcon from '@mui/icons-material/BlockSharp';
+import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
 import './ChatOptions.css';
 
 const ChatOptions = ({ setOptions }) => {
 
   const { openModal, setOpenModal, handleChatOptions } = useContext(ChatContext);
 
+  const handleOpenEditModal = () => {
+
+    setOpenModal({ ...openModal, edit: !openModal.edit });
+    setOptions(false);
+  }
   const handleOpenEraseModal = () => {
     setOpenModal({ ...openModal, erase: !openModal.erase })
     setOptions(false);
@@ -23,14 +32,17 @@ const ChatOptions = ({ setOptions }) => {
     <aside className="ChatOptions">
       <div className="ChatOptions__container">
         <ul className="ChatOptions__list">
-          <li onClick={handleOpenEraseModal}>
-            Erase chat
+          <li onClick={handleOpenEditModal}>
+            <EditIcon /> Edit Chat
           </li>
           <li onClick={handleOpenBlockModal}>
-            Block
+            <BlockSharpIcon /> Block chat
+          </li>
+          <li onClick={handleOpenEraseModal}>
+            <DeleteSweepSharpIcon />Erase chat
           </li>
           <li onClick={handleOpenDeleteModal}>
-            Delete
+            <DeleteSharpIcon /> Delete chat
           </li>
         </ul>
       </div>
