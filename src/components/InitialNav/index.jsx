@@ -10,7 +10,7 @@ const InitialNav = () => {
   return(
     <nav className='InitialNav Header__nav'>
       <section className="InitialNav__logo-container">
-        <img src="" alt="kajlosapp" className="logo-container--logo" />
+        <h2>KajlosApp</h2>
       </section>
       <section className="InitialNav__options-container">
         <figure className='options-container__icon-container' onClick={handleSearchOpen}>

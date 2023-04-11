@@ -35,17 +35,17 @@ export const sendMessageModel = (chat, message) => ({
   messages: [
     ...chat.messages,
     {
+      id: chat.messages.length ? chat.messages.length + 1 : 1,
       text: message.message,
       datetime: getSimpleDate(),
       isMine: message.isMine,
       canEdit: message.isMine,
-      id: chat.messages.length ? chat.messages.length + 1 : 1,
-      isRead: false,
-      isTaken: false,
-      isDelivered: true,
+      isReply: false,
+      replyTo: {},
+      replies: [],
     }
   ],
-})
+});
 
 export const updateMessageModel = (chat, messageId, changes) => {
 
@@ -61,3 +61,16 @@ export const updateMessageModel = (chat, messageId, changes) => {
     ]
   }
 }
+
+export const replyMessageModel = (chat, messageId, data) => ({
+  id: chat.messages.length ? chat.messages.length + 1 : 1,
+  text: data.message,
+  datetime: getSimpleDate(),
+  isMine: data.isMine,
+  canEdit: data.isMine,
+  isReply: true,
+  replyTo: {
+    ...chat.messages.find(m => m.messageId === messageId),
+  },
+  replies: [],
+})

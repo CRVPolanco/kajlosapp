@@ -4,9 +4,12 @@ import {
   DELETE_CHAT,
   ERASE_CHAT,
   BLOCK_CHAT,
-  DELETE_MESSAGE,
   SEND_MESSAGE,
   UPDATE_MESSAGE,
+  DELETE_MESSAGE,
+  REPLY_TO_MESSAGE,
+  UPDATE_REPLY_TO_MESSAGE,
+  DELETE_REPLY_TO_MESSAGE,
 } from "./actions";
 import {
   chatModel,
@@ -14,6 +17,7 @@ import {
   blockChatModel,
   updateChatModel,
   sendMessageModel,
+  replyMessageModel,
 } from '../utils/chatModel';
 
 export const chatsInitialState = {
@@ -55,6 +59,38 @@ export const chatsReducer = (state = chatsInitialState, action) => {
         ...state,
         chats: [
           ...getAllChats,
+        ],
+      };
+
+    case ERASE_CHAT:
+
+      const findToErase = state.chats.findIndex(c => c.chatId === action.payload.chatId);
+
+      const erase = eraseChatModel(state.chats[findToErase]);
+
+      const erasedChat = [...state.chats];
+      erasedChat.splice(findToErase, 1, erase);
+
+      return {
+        ...state,
+        chats: [
+          ...erasedChat,
+        ]
+      };
+
+    case BLOCK_CHAT:
+
+      const findToBlock = state.chats.findIndex(c => c.chatId === action.payload.chatId);
+
+      const block = blockChatModel(state.chats[findToBlock]);
+
+      const blockedChat = [...state.chats];
+      blockedChat.splice(findToBlock, 1, block);
+
+      return {
+        ...state,
+        chats: [
+          ...blockedChat,
         ],
       };
 
@@ -125,8 +161,6 @@ export const chatsReducer = (state = chatsInitialState, action) => {
       const allChatsToChange = [...state.chats];
       const chatModified = state.chats[findCht];
 
-      const findMessage = chatModified.messages.findIndex(m => m.id === action.payload.messageId);
-
       const changedMessages = chatModified.messages.filter(m => m.id !== action.payload.messageId);
 
       const deletedMessage = {
@@ -143,37 +177,29 @@ export const chatsReducer = (state = chatsInitialState, action) => {
         ]
       };
 
-    case ERASE_CHAT:
+    case REPLY_TO_MESSAGE:
 
-      const findToErase = state.chats.findIndex(c => c.chatId === action.payload.chatId);
+      const allChatsToReply = [...state.chats];
+      const filteredChatsToReply = allChatsToReply.filter(c => c.chatId !== action.payload.chatId);
 
-      const erase = eraseChatModel(state.chats[findToErase]);
+      const indexChatToReply = allChatsToReply.findIndex(c => c.chatId === action.payload.chatId);
+      const chatToReply = allChatsToReply[indexChatToReply];
 
-      const erasedChat = [...state.chats];
-      erasedChat.splice(findToErase, 1, erase);
+      const indexMessageToReply = chatToReply.findIndex(m => m.id === action.payload.messageId);
+      const mesToReply = chatToReply.messages[indexMessageToReply];
+
+      const repliedMessage = replyMessageModel(chatToReply, action.payload.messageId, action.payload);
+      const messageWithReply = { ...mesToReply, replies: [ ...mesToReply.replies, repliedMessage ] };
+
+      chatToReply.messages.splice(indexMessageToReply, 1, messageWithReply);
 
       return {
         ...state,
         chats: [
-          ...erasedChat,
+          { ...chatToReply },
+          ...filteredChatsToReply,
         ]
-      };
-
-    case BLOCK_CHAT:
-
-      const findToBlock = state.chats.findIndex(c => c.chatId === action.payload.chatId);
-
-      const block = blockChatModel(state.chats[findToBlock]);
-
-      const blockedChat = [...state.chats];
-      blockedChat.splice(findToBlock, 1, block);
-
-      return {
-        ...state,
-        chats: [
-          ...blockedChat,
-        ],
-      };
+      }
 
     default:
       return { ...state };
