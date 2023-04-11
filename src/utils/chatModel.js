@@ -38,7 +38,7 @@ export const sendMessageModel = (chat, message) => ({
       id: chat.messages.length ? chat.messages.length + 1 : 1,
       text: message.message,
       datetime: getSimpleDate(),
-      isMine: message.isMine,
+      isMine: (chat.messages.length %2 === 0) ? true : false,
       canEdit: message.isMine,
       isReply: false,
       replyTo: {},

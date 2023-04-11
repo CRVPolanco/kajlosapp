@@ -44,7 +44,7 @@ const Message = ({ chat, sendByMe, message }) => {
       <article className='Message__container'>
         <article className='Message__data-text'>
           {editMessage && <textarea onChange={handleEditText} value={editText}></textarea>}
-          {!editMessage && <p>{sendByMe ? '~You: ' : `~${message.date}: ` }{message.text}</p>}
+          {!editMessage && <p>{sendByMe ? '~You: ' : `~${chat.name}: ` }{message.text}</p>}
         </article>
         <article className='Message__data-time'>
           {editMessage &&
@@ -57,7 +57,7 @@ const Message = ({ chat, sendByMe, message }) => {
               <DoneIcon />
             </figure>
           }
-          {!editMessage &&
+          {(!editMessage && sendByMe) &&
             <figure className="standard-modify-message--icons" onClick={handleEditMessage}>
               <EditIcon />
             </figure>
