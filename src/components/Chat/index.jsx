@@ -47,6 +47,11 @@ const Chat = () => {
   return(
     <section className='Chat'>
       <div className='Chat__container'>
+        {!chats[index].messages.length &&
+          <div className="Chat__no-messages">
+            <p className="no-messages__text">There is no messages yet, send one!</p>
+          </div>
+        }
         {chats[index].isBlocked && <LockedChat unlock={blockAndClose} />}
         {chats[index].messages.map(m => (
           <Message
